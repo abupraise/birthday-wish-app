@@ -21,11 +21,11 @@ export default function ReceiverPage() {
       setWishData(JSON.parse(data))
     }
     const loadingTimeout = setTimeout(() => {
-        setLoading(false)
-      }, 3000)
-  
-      return () => clearTimeout(loadingTimeout)
-    }, [id])
+      setLoading(false)
+    }, 3000)
+
+    return () => clearTimeout(loadingTimeout)
+  }, [id])
 
   useEffect(() => {
     if (isListening) {
@@ -71,7 +71,7 @@ export default function ReceiverPage() {
     analyser.current.getByteFrequencyData(dataArray.current)
     const average = dataArray.current.reduce((a, b) => a + b) / dataArray.current.length
 
-    if (average > 100) { 
+    if (average > 100) {
       setCandlesBlownOut(true)
       setIsListening(false)
       confetti({
@@ -85,14 +85,19 @@ export default function ReceiverPage() {
   }
 
   if (loading) {
-    return <div className="fullscreen-spinner"><div className="spinner"></div></div>
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-white-100">
+        <div className="spinner"></div>
+      </div>
+    )
   }
 
   if (!wishData) {
-    return 
-    <div className="flex justify-center items-center min-h-screen bg-white-100">
-    <div className='spinner'></div>
-    </div>
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-white-100">
+        <div className="spinner"></div>
+      </div>
+    )
   }
 
   return (
