@@ -89,7 +89,10 @@ export default function ReceiverPage() {
   }
 
   if (!wishData) {
-    return <div className='spinner'></div>
+    return 
+    <div className="flex justify-center items-center min-h-screen bg-white-100">
+    <div className='spinner'></div>
+    </div>
   }
 
   return (
