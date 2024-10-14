@@ -17,13 +17,11 @@ export default function Cake({ age, isLit = true }: CakeProps) {
       className="relative mx-auto"
       style={{ width: cakeWidth, height: cakeHeight + 80 }}
     >
-      {/* Cake plate */}
       <div
         className="absolute bottom-0 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-orange-200 to-orange-300 rounded-full"
         style={{ width: cakeWidth + 20, height: 16 }}
       ></div>
 
-      {/* Cake tiers */}
       <div
         className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg z-10"
         style={{ width: cakeWidth - 20, height: cakeHeight * 0.4 }}
@@ -37,13 +35,11 @@ export default function Cake({ age, isLit = true }: CakeProps) {
         style={{ width: cakeWidth - 160, height: cakeHeight * 0.2 }}
       ></div>
 
-      {/* Decorative swirls */}
       <div
         className="absolute bottom-6 left-1/2 transform -translate-x-1/2 border-b-4 border-white rounded-full z-40"
         style={{ width: cakeWidth - 50, height: 16 }}
       ></div>
 
-      {/* Decorative dots */}
       {[...Array(20)].map((_, i) => (
         <div
           key={i}
@@ -55,7 +51,6 @@ export default function Cake({ age, isLit = true }: CakeProps) {
         ></div>
       ))}
 
-      {/* Candles */}
       <div
         className="absolute top-10 left-1/2 transform -translate-x-1/2 flex justify-center items-end z-1"
         style={{ width: cakeWidth - 20 }}

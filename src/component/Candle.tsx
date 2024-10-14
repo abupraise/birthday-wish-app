@@ -8,7 +8,6 @@ interface CandleProps {
 export default function Candle({ isLit }: CandleProps) {
   return (
     <div className="relative mx-0.5 w-4 h-16">
-      {/* Candle body */}
       <motion.div
         initial={{ height: 0 }}
         animate={{ height: 64 }}
@@ -16,10 +15,8 @@ export default function Candle({ isLit }: CandleProps) {
         className="absolute bottom-0 w-full bg-gradient-to-b from-yellow-50 to-yellow-100 rounded-t-sm rounded-b-3xl border border-gray-300"
       ></motion.div>
       
-      {/* Candle wick */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0.5 h-1 bg-gray-700"></div>
       
-      {/* Candle flame */}
       {isLit && (
         <motion.div
           initial={{ scale: 0 }}

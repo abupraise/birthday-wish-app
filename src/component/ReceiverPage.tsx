@@ -9,6 +9,7 @@ export default function ReceiverPage() {
   const [wishData, setWishData] = useState<any>(null)
   const [candlesBlownOut, setCandlesBlownOut] = useState(false)
   const [isListening, setIsListening] = useState(false)
+  const [loading, setLoading] = useState(true)
   const audioContext = useRef<AudioContext | null>(null)
   const analyser = useRef<AnalyserNode | null>(null)
   const dataArray = useRef<Uint8Array | null>(null)
@@ -19,7 +20,12 @@ export default function ReceiverPage() {
     if (data) {
       setWishData(JSON.parse(data))
     }
-  }, [id])
+    const loadingTimeout = setTimeout(() => {
+        setLoading(false)
+      }, 3000)
+  
+      return () => clearTimeout(loadingTimeout)
+    }, [id])
 
   useEffect(() => {
     if (isListening) {
@@ -78,8 +84,12 @@ export default function ReceiverPage() {
     animationFrameId.current = requestAnimationFrame(detectBlow)
   }
 
+  if (loading) {
+    return <div className="fullscreen-spinner"><div className="spinner"></div></div>
+  }
+
   if (!wishData) {
-    return <div>Loading...</div>
+    return <div className='spinner'></div>
   }
 
   return (
