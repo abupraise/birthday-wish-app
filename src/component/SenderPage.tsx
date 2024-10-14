@@ -16,7 +16,7 @@ export default function SenderPage() {
         const uniqueId = generateUniqueId()
         const wishData = { celebrantName, celebrantAge, senderName, message }
         localStorage.setItem(uniqueId, JSON.stringify(wishData))
-        setGeneratedLink(`${window.location.origin}/${uniqueId}`)
+        setGeneratedLink(`${window.location.origin}/wish/${uniqueId}`)
     }
 
     return (
