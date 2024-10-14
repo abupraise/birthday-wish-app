@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import Cake from './Cake'
-import { generateUniqueId } from './utils'
+import axios from 'axios'
 
 export default function SenderPage() {
     const [celebrantName, setCelebrantName] = useState('')
@@ -10,13 +10,25 @@ export default function SenderPage() {
     const [message, setMessage] = useState('')
     const [generatedLink, setGeneratedLink] = useState('')
     const [isPreviewMode, setIsPreviewMode] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState('')
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const uniqueId = generateUniqueId()
-        const wishData = { celebrantName, celebrantAge, senderName, message }
-        localStorage.setItem(uniqueId, JSON.stringify(wishData))
-        setGeneratedLink(`${window.location.origin}/wish/${uniqueId}`)
+        setIsLoading(true)
+        setError('')
+        try {
+            const response = await axios.post('http://localhost:3001/api/wishes', {
+                celebrantName,
+                celebrantAge: parseInt(celebrantAge),
+                senderName,
+                message
+            })
+            setGeneratedLink(`${window.location.origin}/wish/${response.data.id}`)
+        } catch (err) {
+            setError('Failed to generate link. Please try again.')
+        }
+        setIsLoading(false)
     }
 
     return (
@@ -51,18 +63,6 @@ export default function SenderPage() {
                             max="150"
                             className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         />
-                        <style>
-                            {`
-                                input[type='number']::-webkit-inner-spin-button,
-                                input[type='number']::-webkit-outer-spin-button {
-                                -webkit-appearance: none;
-                                margin: 0;
-                                }
-                                input[type='number'] {
-                                -moz-appearance: textfield;
-                                }
-                            `}
-                        </style>
                     </div>
                     <div>
                         <label htmlFor="senderName" className="block text-sm font-medium text-gray-700">Your Name</label>
@@ -88,9 +88,10 @@ export default function SenderPage() {
                     <div className="flex justify-between">
                         <button
                             type="submit"
+                            disabled={isLoading}
                             className="py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Generate Link
+                            {isLoading ? 'Generating...' : 'Generate Link'}
                         </button>
                         <button
                             type="button"
@@ -101,6 +102,7 @@ export default function SenderPage() {
                         </button>
                     </div>
                 </form>
+                {error && <p className="mt-2 text-red-600">{error}</p>}
                 {generatedLink && (
                     <div className="mt-4">
                         <p className="text-sm font-medium text-gray-700">Share this link with the celebrant:</p>

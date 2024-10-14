@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import Cake from './Cake'
 import confetti from 'canvas-confetti'
+import axios from 'axios'
 
 export default function ReceiverPage() {
   const { id } = useParams<{ id: string }>()
@@ -10,22 +11,25 @@ export default function ReceiverPage() {
   const [candlesBlownOut, setCandlesBlownOut] = useState(false)
   const [isListening, setIsListening] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
   const audioContext = useRef<AudioContext | null>(null)
   const analyser = useRef<AnalyserNode | null>(null)
   const dataArray = useRef<Uint8Array | null>(null)
   const animationFrameId = useRef<number | null>(null)
 
   useEffect(() => {
-    const data = localStorage.getItem(id || '')
-    if (data) {
-      setWishData(JSON.parse(data))
+    const fetchWishData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/wishes/${id}`)
+        setWishData(response.data)
+      } catch (err) {
+        setError('Failed to load birthday wish. Please check the URL and try again.')
+      } finally {
+        setLoading(false)
+      }
     }
-    
-    const loadingTimeout = setTimeout(() => {
-      setLoading(false)
-    }, 3000)
 
-    return () => clearTimeout(loadingTimeout)
+    fetchWishData()
   }, [id])
 
   useEffect(() => {
@@ -93,6 +97,16 @@ export default function ReceiverPage() {
     )
   }
 
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-white-100">
+        <div className="text-center">
+          <p className="text-lg text-gray-700">{error}</p>
+        </div>
+      </div>
+    )
+  }
+
   if (!wishData) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white-100">
@@ -110,7 +124,7 @@ export default function ReceiverPage() {
         animate={{ opacity: 1, scale: 1 }}
         className="text-center"
       >
-        <Cake age={parseInt(wishData.celebrantAge)} isLit={!candlesBlownOut} />
+        <Cake age={wishData.celebrantAge} isLit={!candlesBlownOut} />
         <AnimatePresence>
           {!candlesBlownOut && (
             <motion.div
