@@ -20,6 +20,7 @@ export default function ReceiverPage() {
     if (data) {
       setWishData(JSON.parse(data))
     }
+    
     const loadingTimeout = setTimeout(() => {
       setLoading(false)
     }, 3000)
@@ -95,7 +96,9 @@ export default function ReceiverPage() {
   if (!wishData) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white-100">
-        <div className="spinner"></div>
+        <div className="text-center">
+          <p className="text-lg text-gray-700">Could not load birthday wish. Please try again later.</p>
+        </div>
       </div>
     )
   }
