@@ -97,7 +97,7 @@ export default function ReceiverPage() {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white-100">
         <div className="text-center">
-          <p className="text-lg text-gray-700">Could not load birthday wish. Please try again later.</p>
+          <p className="text-lg text-gray-700">Could not load birthday wish. Please reload the page.</p>
         </div>
       </div>
     )
