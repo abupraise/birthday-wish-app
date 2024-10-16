@@ -29,7 +29,7 @@ export default function Candle({ isLit }: CandleProps) {
             repeat: Infinity,
             repeatType: 'reverse',
           }}
-          className="absolute -top-4 left-1/2 transform -translate-x-1/2"
+          className="absolute -top-4 left-[0.15rem] transform -translate-x-1/2"
         >
           <div className="w-3 h-4 bg-gradient-to-t from-orange-400 via-orange-300 to-yellow-200 rounded-full transform origin-bottom scale-x-50"></div>
         </motion.div>
