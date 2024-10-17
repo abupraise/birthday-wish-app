@@ -1,6 +1,6 @@
 // File: api/wish.ts
 
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { MongoClient, ObjectId } from 'mongodb';
 
 let cachedDb: any = null;
@@ -15,7 +15,7 @@ async function connectToDatabase(uri: string) {
   return db;
 }
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'https://bdayapp.vercel.app');
