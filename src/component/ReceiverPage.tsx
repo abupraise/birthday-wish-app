@@ -19,7 +19,7 @@ export default function ReceiverPage() {
   useEffect(() => {
     const fetchWish = async () => {
       try {
-        const response = await fetch(`/wish/${id}`);
+        const response = await fetch(`api/wish/${id}`);
         if (response.ok) {
           const data = await response.json();
           setWishData(data);

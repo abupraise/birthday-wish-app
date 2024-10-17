@@ -14,7 +14,7 @@ export default function SenderPage() {
         e.preventDefault();
 
         try {
-            const response = await fetch('https://bdayapp.vercel.app/wish', {
+            const response = await fetch('https://bdayapp.vercel.app/api/wish', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
