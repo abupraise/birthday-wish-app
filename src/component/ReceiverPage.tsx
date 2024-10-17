@@ -1,96 +1,105 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { useParams } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import Cake from './Cake'
-import confetti from 'canvas-confetti'
+import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
+import Cake from './Cake';
+import confetti from 'canvas-confetti';
 
 export default function ReceiverPage() {
-  const { id } = useParams<{ id: string }>()
-  const [wishData, setWishData] = useState<any>(null)
-  const [candlesBlownOut, setCandlesBlownOut] = useState(false)
-  const [isListening, setIsListening] = useState(false)
-  const [loading, setLoading] = useState(true)
-  const audioContext = useRef<AudioContext | null>(null)
-  const analyser = useRef<AnalyserNode | null>(null)
-  const dataArray = useRef<Uint8Array | null>(null)
-  const animationFrameId = useRef<number | null>(null)
+  const { id } = useParams<{ id: string }>();
+  const [wishData, setWishData] = useState<any>(null);
+  const [candlesBlownOut, setCandlesBlownOut] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const audioContext = useRef<AudioContext | null>(null);
+  const analyser = useRef<AnalyserNode | null>(null);
+  const dataArray = useRef<Uint8Array | null>(null);
+  const animationFrameId = useRef<number | null>(null);
 
+  // Fetch the wish data from the backend API
   useEffect(() => {
-    const data = localStorage.getItem(id || '')
-    if (data) {
-      setWishData(JSON.parse(data))
-    }
+    const fetchWish = async () => {
+      try {
+        const response = await fetch(`/api/wish/${id}`);
+        if (response.ok) {
+          const data = await response.json();
+          setWishData(data);
+        } else {
+          setWishData(null);
+        }
+      } catch (error) {
+        console.error('Error fetching birthday wish:', error);
+        setWishData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
     
-    const loadingTimeout = setTimeout(() => {
-      setLoading(false)
-    }, 3000)
-
-    return () => clearTimeout(loadingTimeout)
-  }, [id])
+    fetchWish();
+  }, [id]);
 
   useEffect(() => {
     if (isListening) {
-      startListening()
+      startListening();
     } else {
-      stopListening()
+      stopListening();
     }
     return () => {
       if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current)
+        cancelAnimationFrame(animationFrameId.current);
       }
-    }
-  }, [isListening])
+    };
+  }, [isListening]);
 
   const startListening = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      audioContext.current = new AudioContext()
-      analyser.current = audioContext.current.createAnalyser()
-      const source = audioContext.current.createMediaStreamSource(stream)
-      source.connect(analyser.current)
-      analyser.current.fftSize = 256
-      const bufferLength = analyser.current.frequencyBinCount
-      dataArray.current = new Uint8Array(bufferLength)
-      detectBlow()
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioContext.current = new AudioContext();
+      analyser.current = audioContext.current.createAnalyser();
+      const source = audioContext.current.createMediaStreamSource(stream);
+      source.connect(analyser.current);
+      analyser.current.fftSize = 256;
+      const bufferLength = analyser.current.frequencyBinCount;
+      dataArray.current = new Uint8Array(bufferLength);
+      detectBlow();
     } catch (error) {
-      console.error('Error accessing microphone:', error)
+      console.error('Error accessing microphone:', error);
     }
-  }
+  };
 
   const stopListening = () => {
     if (audioContext.current) {
-      audioContext.current.close()
+      audioContext.current.close();
     }
     if (animationFrameId.current) {
-      cancelAnimationFrame(animationFrameId.current)
+      cancelAnimationFrame(animationFrameId.current);
     }
-  }
+  };
 
   const detectBlow = () => {
-    if (!analyser.current || !dataArray.current) return
+    if (!analyser.current || !dataArray.current) return;
 
-    analyser.current.getByteFrequencyData(dataArray.current)
-    const average = dataArray.current.reduce((a, b) => a + b) / dataArray.current.length
+    analyser.current.getByteFrequencyData(dataArray.current);
+    const average = dataArray.current.reduce((a, b) => a + b) / dataArray.current.length;
 
     if (average > 100) {
-      setCandlesBlownOut(true)
-      setIsListening(false)
+      setCandlesBlownOut(true);
+      setIsListening(false);
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 },
-      })
+      });
     }
 
-    animationFrameId.current = requestAnimationFrame(detectBlow)
-  }
+    animationFrameId.current = requestAnimationFrame(detectBlow);
+  };
 
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-white-100">
         <div className="spinner"></div>
       </div>
-    )
+    );
   }
 
   if (!wishData) {
@@ -100,7 +109,7 @@ export default function ReceiverPage() {
           <p className="text-lg text-gray-700">Could not load birthday wish. Please reload the page.</p>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -148,5 +157,5 @@ export default function ReceiverPage() {
         </AnimatePresence>
       </motion.div>
     </div>
-  )
+  );
 }
