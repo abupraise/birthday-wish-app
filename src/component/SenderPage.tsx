@@ -12,20 +12,26 @@ export default function SenderPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    const response = await fetch('/api/wish', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ celebrantName, celebrantAge, senderName, message }),
-    });
-
-    const data = await response.json();
-    if (data.success) {
+  
+    try {
+      const response = await fetch('/api/wish', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ celebrantName, celebrantAge, senderName, message }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to save the wish.');
+      }
+  
+      const data = await response.json();
       setGeneratedLink(`${window.location.origin}/wish/${data.id}`);
+    } catch (error) {
+      console.error('Error creating birthday wish:', error);
     }
-  };
+  };  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 flex flex-col items-center justify-center p-4">
