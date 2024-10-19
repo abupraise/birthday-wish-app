@@ -1,24 +1,24 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { MongoClient, ObjectId } from 'mongodb';
 
 let cachedDb: any = null;
 
 async function connectToDatabase(uri: string) {
-    try {
-      if (cachedDb) {
-        return cachedDb;
-      }
-      const client = await MongoClient.connect(uri);
-      const db = client.db('birthday_app_db');
-      cachedDb = db;
-      return db;
-    } catch (error) {
-      console.error('Database connection error:', error);
-      throw error;
+  try {
+    if (cachedDb) {
+      return cachedDb;
     }
-  }  
+    const client = await MongoClient.connect(uri);
+    const db = client.db('birthday_app_db');
+    cachedDb = db;
+    return db;
+  } catch (error) {
+    console.error('Database connection error:', error);
+    throw error;
+  }
+}
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL || 'https://bdayapp.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
