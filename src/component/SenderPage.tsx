@@ -127,6 +127,7 @@ export default function SenderPage() {
                     </div>
                 )}
             </motion.div>
+            
             {isPreviewMode && (
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
