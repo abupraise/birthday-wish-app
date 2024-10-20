@@ -7,7 +7,7 @@ export default function App() {
     <Router>
       <Routes>
         <Route path="/" element={<SenderPage />} />
-        <Route path="/wish/:id" element={<ReceiverPage />} />
+        <Route path="/:celebrantName" element={<ReceiverPage />} />
       </Routes>
     </Router>
   )
