@@ -12,12 +12,12 @@ export default function SenderPage() {
     const [isPreviewMode, setIsPreviewMode] = useState(false)
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        const uniqueId = generateUniqueId()
-        const wishData = { celebrantName, celebrantAge, senderName, message }
-        localStorage.setItem(uniqueId, JSON.stringify(wishData))
-        setGeneratedLink(`${window.location.origin}/wish/${uniqueId}`)
-    }
+        e.preventDefault();
+        const uniqueId = generateUniqueId(celebrantName);
+        const wishData = { celebrantName, celebrantAge, senderName, message };
+        localStorage.setItem(uniqueId, JSON.stringify(wishData));
+        setGeneratedLink(`${window.location.origin}/${uniqueId}`);
+    }    
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 flex flex-col items-center justify-center p-4">

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
+import gifImage from 'src/assets/4A5.gif';
 
 const Cake: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -12,17 +13,17 @@ const Cake: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       className="relative w-80 h-96 mx-auto"
     >
       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-72 h-4 bg-gradient-to-r from-orange-200 to-orange-300 rounded-full"></div>
-      
+
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 w-64 h-24 bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg"></div>
       <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 w-56 h-20 bg-gradient-to-r from-purple-300 to-pink-300 rounded-lg"></div>
       <div className="absolute bottom-48 left-1/2 transform -translate-x-1/2 w-48 h-16 bg-gradient-to-r from-purple-200 to-pink-200 rounded-lg"></div>
       <div className="absolute bottom-64 left-1/2 transform -translate-x-1/2 w-40 h-12 bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg"></div>
-      
+
       <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-60 h-4 border-b-4 border-white rounded-full"></div>
       <div className="absolute bottom-30 left-1/2 transform -translate-x-1/2 w-52 h-4 border-b-4 border-white rounded-full"></div>
       <div className="absolute bottom-50 left-1/2 transform -translate-x-1/2 w-44 h-4 border-b-4 border-white rounded-full"></div>
       <div className="absolute bottom-66 left-1/2 transform -translate-x-1/2 w-36 h-4 border-b-4 border-white rounded-full"></div>
-      
+
       {[...Array(20)].map((_, i) => (
         <div
           key={i}
@@ -33,7 +34,7 @@ const Cake: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           }}
         ></div>
       ))}
-      
+
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex">
         <div className="w-6 h-12 bg-purple-300 rounded-full transform -rotate-15"></div>
         <div className="w-6 h-12 bg-purple-400 rounded-full"></div>
@@ -45,7 +46,7 @@ const Cake: React.FC<{ children: React.ReactNode }> = ({ children }) => {
       <div className="absolute top-4 right-1/4 transform translate-x-1/2">
         <div className="w-4 h-8 bg-green-400 rounded-full transform -rotate-30"></div>
       </div>
-      
+
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex justify-center">
         {children}
       </div>
@@ -62,9 +63,9 @@ const Candle: React.FC<{ isLit: boolean }> = ({ isLit }) => {
         transition={{ duration: 0.5 }}
         className="absolute bottom-0 w-full bg-gradient-to-b from-yellow-50 to-yellow-100 rounded-t-sm rounded-b-3xl border border-gray-300"
       ></motion.div>
-      
+
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-0.5 h-2 bg-gray-700"></div>
-      
+
       {isLit && (
         <motion.div
           initial={{ scale: 0 }}
@@ -163,7 +164,7 @@ export default function BirthdayWishApp() {
     analyser.current.getByteFrequencyData(dataArray.current)
     const average = dataArray.current.reduce((a, b) => a + b) / dataArray.current.length
 
-    if (average > 100) { 
+    if (average > 100) {
       setCandlesBlownOut(true)
       setIsListening(false)
     }
@@ -177,7 +178,16 @@ export default function BirthdayWishApp() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-300 to-purple-400 flex flex-col items-center justify-center p-4">
+    <div
+      className="min-h-screen flex flex-col items-center justify-center p-4 relative"
+      style={{
+        background: 'linear-gradient(to bottom right, #f06292, #ba68c8)',
+        backgroundImage: `url(${gifImage})`,
+        backgroundSize: 'cover',
+        backgroundBlendMode: 'overlay',
+      }}
+    >
+      <div className="absolute inset-0 bg-black opacity-30"></div>
       <AnimatePresence>
         {!isReady ? (
           <motion.div
