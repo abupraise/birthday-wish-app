@@ -5,7 +5,7 @@ import Cake from './Cake'
 import confetti from 'canvas-confetti'
 
 export default function ReceiverPage() {
-  const { id } = useParams<{ id: string }>()
+  const { celebrantName } = useParams<{ celebrantName: string }>()
   const [wishData, setWishData] = useState<any>(null)
   const [candlesBlownOut, setCandlesBlownOut] = useState(false)
   const [isListening, setIsListening] = useState(false)
@@ -16,7 +16,7 @@ export default function ReceiverPage() {
   const animationFrameId = useRef<number | null>(null)
 
   useEffect(() => {
-    const data = localStorage.getItem(id || '')
+    const data = localStorage.getItem(celebrantName.toLowerCase())
     if (data) {
       setWishData(JSON.parse(data))
     }
@@ -26,7 +26,7 @@ export default function ReceiverPage() {
     }, 3000)
 
     return () => clearTimeout(loadingTimeout)
-  }, [id])
+  }, [celebrantName])
 
   useEffect(() => {
     if (isListening) {
