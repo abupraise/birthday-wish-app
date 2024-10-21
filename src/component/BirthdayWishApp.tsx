@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import confetti from 'canvas-confetti'
-import gifImage from 'src/assets/4A5.gif';
+import gifBackground from '../assets/4A5.gif';
 
 const Cake: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
@@ -178,100 +178,109 @@ export default function BirthdayWishApp() {
   }
 
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center p-4 relative"
-      style={{
-        background: 'linear-gradient(to bottom right, #f06292, #ba68c8)',
-        backgroundImage: `url(${gifImage})`,
-        backgroundSize: 'cover',
-        backgroundBlendMode: 'overlay',
-      }}
-    >
-      <div className="absolute inset-0 bg-black opacity-30"></div>
-      <AnimatePresence>
-        {!isReady ? (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md"
-          >
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="age" className="block text-sm font-medium text-gray-700">Celebrant's Age</label>
-                <input
-                  id="age"
-                  type="number"
-                  value={age}
-                  onChange={(e) => setAge(parseInt(e.target.value))}
-                  required
-                  min="1"
-                  max="150"
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="senderName" className="block text-sm font-medium text-gray-700">Your Name</label>
-                <input
-                  id="senderName"
-                  type="text"
-                  value={senderName}
-                  onChange={(e) => setSenderName(e.target.value)}
-                  required
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
-              <div>
-                <label htmlFor="wish" className="block text-sm font-medium text-gray-700">Birthday Wish</label>
-                <textarea
-                  id="wish"
-                  value={wish}
-                  onChange={(e) => setWish(e.target.value)}
-                  required
-                  className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Create Birthday Wish
-              </button>
-            </form>
-          </motion.div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="text-center"
-          >
-            <Cake>
-              {Array.from({ length: age }).map((_, index) => (
-                <Candle key={index} isLit={!candlesBlownOut} />
-              ))}
-            </Cake>
-            {!candlesBlownOut && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mt-4 text-white text-xl font-bold"
-              >
-                Blow out your candles to reveal a birthday wish from {senderName}!
-              </motion.div>
-            )}
-            {!candlesBlownOut && (
-              <button
-                onClick={() => setIsListening(true)}
-                disabled={isListening}
-                className="mt-4 py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                {isListening ? 'Listening...' : 'Start Listening'}
-              </button>
-            )}
-            {candlesBlownOut && <WishReveal wish={wish} />}
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="relative min-h-screen overflow-hidden">
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: `url(${gifBackground})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 1,
+        }}
+      />
+
+      <div
+        className="absolute inset-0 z-10 bg-gradient-to-br from-pink-300 to-purple-400"
+        style={{ mixBlendMode: 'multiply' }}
+      />
+
+      <div className="relative z-20 min-h-screen flex flex-col items-center justify-center p-4">
+        <AnimatePresence>
+          {!isReady ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md"
+            >
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="age" className="block text-sm font-medium text-gray-700">Celebrant's Age</label>
+                  <input
+                    id="age"
+                    type="number"
+                    value={age}
+                    onChange={(e) => setAge(parseInt(e.target.value))}
+                    required
+                    min="1"
+                    max="150"
+                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="senderName" className="block text-sm font-medium text-gray-700">Your Name</label>
+                  <input
+                    id="senderName"
+                    type="text"
+                    value={senderName}
+                    onChange={(e) => setSenderName(e.target.value)}
+                    required
+                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="wish" className="block text-sm font-medium text-gray-700">Birthday Wish</label>
+                  <textarea
+                    id="wish"
+                    value={wish}
+                    onChange={(e) => setWish(e.target.value)}
+                    required
+                    className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Create Birthday Wish
+                </button>
+              </form>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="text-center"
+            >
+              <Cake>
+                {Array.from({ length: age }).map((_, index) => (
+                  <Candle key={index} isLit={!candlesBlownOut} />
+                ))}
+              </Cake>
+              {!candlesBlownOut && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 text-white text-xl font-bold"
+                >
+                  Blow out your candles to reveal a birthday wish from {senderName}!
+                </motion.div>
+              )}
+              {!candlesBlownOut && (
+                <button
+                  onClick={() => setIsListening(true)}
+                  disabled={isListening}
+                  className="mt-4 py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  {isListening ? 'Listening...' : 'Start Listening'}
+                </button>
+              )}
+              {candlesBlownOut && <WishReveal wish={wish} />}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }
